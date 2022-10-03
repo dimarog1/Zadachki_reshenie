@@ -20,23 +20,37 @@ for i in s:
         used += i
 print(ans)
 
+
 # Задача 5
-inp = list(set(map(int, input().split())))
-print(inp[-2])
+def findSum(number):
+    sum = 0
+    for i in range(number):
+        if (i % 3) == 0 or (i % 5) == 0:
+            sum += i
+    return sum
+
 
 # Задача 6
-def reverseString(string):
-    return string[::-1]
+def transpose(tup):
+    return tuple(zip(*[i for i in tup]))
 
 
 # Задача 7
-def triangle(a, b, c):
-    if (a >= b + c) or (b >= a + c) or (c >= a + b):
-        return "Это не треугольник"
-    return "Это треугольник"
+def zeros(n):
+    x = n // 5
+    return x + zeros(x) if x else 0
 
 
 # Задача 8
+def sum_pairs(lst, s):
+    cache = set()
+    for i in lst:
+        if s - i in cache:
+            return [s - i, i]
+        cache.add(i)
+
+
+# Задача 9
 def translit(string):
     rusAlphabet = "абвгдеёжзийклмнопрстуфхцчшъыьэюя"
     translitAlphabet = "a b v g d e yo zh z i y k l m n o" \
@@ -54,14 +68,23 @@ def translit(string):
     return res
 
 
-# Задача 9
-def convertToInt(strList):
-    return list(map(int, strList))
-
-
 # Задача 10
-def totalOrDif(set1, set2, param="and"):
-    if param == "and":
-        return set1 & set2
-    elif param == "dif":
-        return set1 ^ set2
+def isSolved(board):
+    flag = True
+    k = {2: 'O', 1: 'X', 0: ''}
+    for i in range(len(board)):
+        for j in range(len(board[i])):
+            board[i][j] = k[board[i][j]]
+    for i in range(len(board)):
+        horizontal = ''.join(board[i])
+        vertical = ''.join([board[n][i] for n in range(len(board))])
+        diagonal1, diagonal2 = (''.join([board[i][i] for i in range(len(board))]),
+                                ''.join([board[i][len(board) - i - 1] for i in range(len(board))]))
+        flag = False if ((len(horizontal) != 3 or len(vertical) != 3) or not flag) else True
+        if any([j == 'XXX' for j in (horizontal, vertical, diagonal1, diagonal2)]):
+            return 1
+        if any([j == 'OOO' for j in (horizontal, vertical, diagonal1, diagonal2)]):
+            return 2
+    if flag:
+        return 0
+    return -1
